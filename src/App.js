@@ -2,33 +2,69 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [pituus, setPituus] = useState(1.85)
-  const [paino, setPaino] = useState(60)
-  const [bmi, setBmi] = useState(0)
+  const [bottles, setBottles] = useState(0)
+  const [time, setTime] = useState(1)
+  const [weight, setWeight] = useState(0)
+  const [gender, setGender] = useState('male')
+  const [viina, setViina] = useState(0)
 
   const laske = (e) => {
     e.preventDefault()
-    const tulos = paino / (pituus * pituus)
-    setBmi(tulos)
+    const litres = bottles * 0.33
+    const grams = litres * 8 * 4.5
+    const burning = weight / 10
+    const grms = grams - (burning * time)
+    const mies = grms / (weight * 0.7)
+    const nainen = grms / (weight * 0.6)
+    let tulos = 0
+    if (gender === 'male'){
+      tulos = mies
+    } else {
+      tulos =  nainen
+    }
+    
+    setViina(tulos)
   }
 
   return (
    <div classname="tausta">
-    <h1>BMI</h1>
+    <h1>Alcometer</h1>
     <form onSubmit={laske}>
       <div>
-        <label>Pituus</label>
-        <input type="number" value={pituus} onChange={e => setPituus(e.target.value)} />
+        <label>Weight</label>
+        <input type="number" value={weight} onChange={e => setWeight(e.target.value)} />
 
       </div>
       <div>
-        <label>Paino</label>
-        <input type="number" value={paino} onChange={e => setPaino(e.target.value)} />
-        
+        <label>Bottles</label>
+       <select value={bottles} onChange={e => setBottles(e.target.value)}>
+        <option value="1" >1</option>
+        <option value="2" >2</option>
+        <option value="3" >3</option>
+        <option value="4" >4</option>
+        <option value="5" >5</option>
+        <option value="6" >6</option>
+       </select>
       </div>
       <div>
-        <label>BMI</label>
-        <output>{bmi.toFixed(1)}</output>
+        <label>Time</label>
+       <select value={time} onChange={e => setTime(e.target.value)}>
+        <option value="1">1</option>
+        <option value= "2">2</option>
+        <option value= "3">3</option>
+        <option value= "4">4</option>
+        <option value= "5">5</option>
+        <option value= "6">6</option>
+       </select>
+      </div>
+      <div>
+        <label>Gender</label>
+        <input type="radio" name="gender" value="male" onChange={e => setGender(e.target.value)} defaultChecked /> Male
+        <input type="radio" name="gender" value="female" onChange={e => setGender(e.target.value)} /> Female
+      </div>
+      <div>
+        <label>viina</label>
+        <output> {viina.toFixed(2)}</output>
       </div>
       <button>Laske</button>
     </form>
